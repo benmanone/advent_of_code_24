@@ -4,7 +4,7 @@ pub fn day1() {
     let buf = fs::read("src/day1_input.txt").expect("Couldn't read input");
     let mut string = match String::from_utf8(buf) {
         Ok(v) => v,
-        Err(e) => panic!("Invalid UTF-8 sequence: {}", e),
+        Err(e) => panic!("Invalid UTF-8 sequence: {e}"),
     };
     string.pop();
 
@@ -12,14 +12,12 @@ pub fn day1() {
         .split('\n')
         .collect::<Vec<&str>>()
         .iter()
-        .cloned()
+        .copied()
         .map(|s| s.split(' ').collect::<Vec<_>>())
-        .collect::<Vec<Vec<_>>>()
-        .into_iter()
         .map(|v| {
             vec![
-                str::parse::<i32>(*v.first().unwrap()).unwrap(),
-                str::parse::<i32>(*v.last().unwrap()).unwrap(),
+                str::parse::<i32>(v.first().unwrap()).unwrap(),
+                str::parse::<i32>(v.last().unwrap()).unwrap(),
             ]
         })
         .collect::<Vec<Vec<_>>>();
@@ -28,33 +26,27 @@ pub fn day1() {
         .iter()
         .map(|v| *v.first().expect("Empty Vec"))
         .collect::<Vec<_>>();
-    left.sort();
+    left.sort_unstable();
 
     let mut right = codes
         .iter()
         .map(|v| *v.last().expect("Empty Vec"))
         .collect::<Vec<_>>();
-    right.sort();
+    right.sort_unstable();
 
-    let sorted_codes = (0..=codes.len() - 1)
-        .map(|u| {
-            vec![
-                left.get(u).expect("Couldn't index left"),
-                right.get(u).expect("Couldn't index right"),
-            ]
+    let distance = (0..codes.len())
+        .map(|i| {
+            (left.get(i).expect("Couldn't index left")
+                - right.get(i).expect("Couldn't index right"))
+            .abs()
         })
-        .collect::<Vec<Vec<_>>>();
-
-    let distance = sorted_codes
-        .iter()
-        .map(|v| (*v.first().unwrap() - *v.last().unwrap()).abs())
         .sum::<i32>();
 
     println!("{distance}");
 
     let similarity = left
         .iter()
-        .map(|l| l * (right.split(|r| *r == *l).collect::<Vec<_>>().len() as i32 - 1))
+        .map(|l| l * (right.split(|r| *r == *l).count() as i32 - 1))
         .sum::<i32>();
 
     println!("{similarity}");
