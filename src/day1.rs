@@ -42,12 +42,12 @@ pub fn day1() {
         })
         .sum::<i32>();
 
-    println!("{distance}");
+    println!("DAY 1:\n\tDistance: {distance}");
 
     let similarity = left
         .iter()
         .map(|l| l * (right.split(|r| *r == *l).count() as i32 - 1))
         .sum::<i32>();
 
-    println!("{similarity}");
+    println!("\tSimilarity: {similarity}");
 }
