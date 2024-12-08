@@ -70,10 +70,9 @@ pub fn day7() {
                         '+' => sum.push(*sum.last().unwrap() + *ints.get(n + 1).unwrap()),
                         '*' => sum.push(*sum.last().unwrap() * *ints.get(n + 1).unwrap()),
                         '|' => sum.push(
-                            (sum.last().unwrap().to_string()
-                                + &ints.get(n + 1).unwrap().to_string())
-                                .parse::<u64>()
-                                .expect("Couldn't concatenate"),
+                            ((10_u64.pow(ints.get(n + 1).unwrap().to_string().len() as u32))
+                                * sum.last().unwrap())
+                                + ints.get(n + 1).unwrap(),
                         ),
                         _ => (),
                     });
