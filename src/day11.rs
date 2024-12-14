@@ -38,5 +38,5 @@ pub fn day11() {
             });
     }
 
-    println!("{:?}", stones.into_values().sum::<u64>());
+    println!("DAY 11:\n\t{:?}", stones.into_values().sum::<u64>());
 }
